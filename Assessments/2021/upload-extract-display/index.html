@@ -1,3 +1,7 @@
+
+
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -20,7 +24,7 @@
         <h1>Engineering Internship Assessment</h1>
     </div>
 
-    <div class="instruction-wrapper">
+    <!-- <div class="instruction-wrapper">
         <h2>What you need to do?</h2>
         <h3 style="margin-top:31px;">Using this HTML template, create a page that can:</h3>
         <ol>
@@ -36,7 +40,7 @@
             <li><b class="yellow">If you are not hosting</b>, please provide a video as proof (GDrive video link is ok)</li>
             <li><b class="yellow">Submit your code</b> by pushing to your own github account, and share the link with us</li>
         </ol>
-    </div>
+    </div> -->
 
     <!-- DO NO REMOVE CODE STARTING HERE -->
     <div class="display-wrapper">
@@ -44,9 +48,95 @@
         <div class="append-images-here">
             <p>No image found. Your extracted images should be here.</p>
             <!-- THE IMAGES SHOULD BE DISPLAYED INSIDE HERE -->
+            <form method="POST"  enctype="multipart/form-data">
+                <label>Upload ZIP file</label>
+                <br>
+                <input type="file" name="zip_file"/>
+                <br/>
+                <input type="submit" name = "btn_zip" value="Upload ZIP" />
+                
+                <?php 
+                
+                    if(isset($output))  
+                    {  
+                         echo $output;  
+                    }  
+                ?>
+            </form>
         </div>
     </div>
     <!-- DO NO REMOVE CODE UNTIL HERE -->
 
 </body>
 </html>
+
+<?php  
+ if(isset($_POST["btn_zip"]))  
+ {  
+    //Upload zip file
+
+    $zip = new ZipArchive;
+    // $file = $zip->open('images2.zip');
+    $file = $_FILES['zip_file'];
+    $fileName = $_FILES['zip_file']['name'];
+    $fileType = $_FILES['zip_file']['type'];
+    $fileError = $_FILES['zip_file']['error'];
+    $fileSize = $_FILES['zip_file']['size'];
+
+    $fileArray = explode('.', $fileName);
+    $fileExt = strtolower(end($fileArray));
+
+    $acceptedformat = array('zip','jpg', 'jpeg', 'PNG', 'jfif');
+
+    if(in_array($fileExt, $acceptedformat)){
+        $fileNameNew = uniqid('', true).".".$fileExt;
+        $fileDestination = 'imgupload/'.$fileNameNew;
+        move_uploaded_file($fileTmpName, $fileDestination);
+        
+    }else{
+        echo "Wrong format";
+    }
+    // Zip File Name
+    if ($file === TRUE) {
+  
+        // Unzip Path
+        $zip->extractTo('C:/wamp64/www/dx-intern-assessment/Assessments/2021/upload-extract-display/');
+        $file = $zip->close('images2.zip');
+        echo 'Unzipped Process Successful!';
+    } 
+    else {
+    echo 'Unzipped Process failed';
+    }
+    //Extract zip file to a folder
+
+    //Read image files from folder by pointing to folder Name
+    $dir_path = "imgupload/";
+    $extensions_array = array('jpg','png','jpeg', 'jfif');
+
+    if(is_dir($dir_path))
+    {
+    $files = scandir($dir_path);
+    
+    for($i = 0; $i < count($files); $i++)
+    {
+        if($files[$i] !='.' && $files[$i] !='..')
+        {
+            // get file name
+            echo "File Name -> $files[$i]<br>";
+            
+            // get file extension
+            $file = pathinfo($files[$i]);
+            $extension = $file['extension'];
+            echo "File Extension-> $extension<br>";
+            
+           // check file extension
+            if(in_array($extension, $extensions_array))
+            {
+            // show image
+            echo "<img src='$dir_path$files[$i]' style='width:100px;height:100px;'><br>";
+            }
+        }
+    }
+}
+ }  
+ ?>  
