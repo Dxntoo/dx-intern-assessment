@@ -53,12 +53,12 @@ if(isset($_POST["btn_zip"])){
                 <input type="file" name="zip_file"/>
                 <input type="submit" name = "btn_zip" class="btn btn-info" value="Upload ZIP" />
 
-                <!---------Reading and displaying images inside the directory after extraction--->
+                
                 
                 <br/>
             </form>
             <?php 
-                    
+                    //-----------------------Reading and displaying images in the directory --------------------
                     $path = "imgupload/";
                     //Scan imgupload directory
                     $imgfiles = scandir($path);
