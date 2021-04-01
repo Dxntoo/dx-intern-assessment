@@ -34,12 +34,6 @@
             </div>
         </div>
     </br>
-        <div class = 'row d-flex justify-content-center'>
-            <div>
-                <input type='text'>
-                <button type='button' class='btn btn-primary btn-block' id='convertBtn' onclick='convert()'> Convert </button>
-            </div>
-        </div>
         
         
     </div>
@@ -60,12 +54,13 @@
 
     function minusValue(){
         let minusBtn = document.getElementById("leftBtn").innerHTML
-        document.getElementById("countValue").innerHTML = counterValue;
+        
         if(counterValue > 0){
            counterValue-- 
         }else{
             counterValue = 0
         }
+        document.getElementById("countValue").innerHTML = counterValue;
         
     }
 
